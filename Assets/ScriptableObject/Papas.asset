@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1122dea57d01f0d409e0dc6116929a55, type: 3}
   m_Name: Papas
   m_EditorClassIdentifier: 
-  _pullForce: 300
+  _pullForce: 350
   _usualGravity: 0
   _physicsMaterial: {fileID: 0}
