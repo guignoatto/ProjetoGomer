@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -13,9 +14,12 @@ public class AddForce : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D bouncyMaterial;
 
     private Rigidbody2D _rbd;
-    private BoxCollider2D _boxCollider2D;
-    private bool _grounded;
+    private BoxCollider2D _boxCollider2D; 
+    [SerializeField]private CameraZoom _cameraZoom;
+    [SerializeField]private bool _grounded;
     private bool _dragging;
+    private bool _zoom = false;
+    private bool _stopGrounded = false;
 
     private void Start()
     {
@@ -41,7 +45,19 @@ public class AddForce : MonoBehaviour
         _grounded = raycastHit2D.collider != null;
 
         _boxCollider2D.sharedMaterial = _grounded ? null : bouncyMaterial;
-        _rbd.drag = _grounded? 5 : 0;
+        if (_grounded)
+        {
+            _rbd.drag = 5;
+            if (_zoom && _stopGrounded)
+            {
+                _cameraZoom.zoomIn = true;
+                _zoom = false;
+            }
+        }
+        else
+        {
+            _rbd.drag = 0;
+        }
     }
 
     private void Inputs()
@@ -67,6 +83,10 @@ public class AddForce : MonoBehaviour
             CalculateDirection(firstClickTransform.transform.position, mouseUpTransform.transform.position);
         _rbd.drag = 0;
         _rbd.AddForce(direction * charAttributes.PullForce);
+        StartCoroutine(StopGrounded());
+        _cameraZoom.zoomOut = true;
+        _zoom = true;
+        
     }
 
     private Vector2 CalculateDirection(Vector2 pointA, Vector2 pointB)
@@ -84,5 +104,12 @@ public class AddForce : MonoBehaviour
         }
 
         return direction;
+    }
+
+    private IEnumerator StopGrounded()
+    {
+        _stopGrounded = false;
+        yield return new WaitForSeconds(0.05f);
+        _stopGrounded = true;
     }
 }
