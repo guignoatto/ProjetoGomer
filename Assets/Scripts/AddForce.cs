@@ -12,11 +12,12 @@ public class AddForce : MonoBehaviour
     [SerializeField] private Transform firstClickTransform;
     [SerializeField] private Transform mouseUpTransform;
     [SerializeField] private PhysicsMaterial2D bouncyMaterial;
-
-    private Rigidbody2D _rbd;
-    private BoxCollider2D _boxCollider2D; 
     [SerializeField]private CameraZoom _cameraZoom;
     [SerializeField]private bool _grounded;
+    
+    private Rigidbody2D _rbd;
+    private BoxCollider2D _boxCollider2D;
+    private PlayerSounds _playerSounds;
     private bool _dragging;
     private bool _zoom = false;
     private bool _stopGrounded = false;
@@ -25,6 +26,7 @@ public class AddForce : MonoBehaviour
     {
         _rbd = GetComponent<Rigidbody2D>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
+        _playerSounds = GetComponent<PlayerSounds>();
     }
 
     private void Update()
@@ -86,7 +88,7 @@ public class AddForce : MonoBehaviour
         StartCoroutine(StopGrounded());
         _cameraZoom.zoomOut = true;
         _zoom = true;
-        
+        _playerSounds.PlaySound(_playerSounds.jump);
     }
 
     private Vector2 CalculateDirection(Vector2 pointA, Vector2 pointB)
