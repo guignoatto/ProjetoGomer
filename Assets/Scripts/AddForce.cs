@@ -14,7 +14,8 @@ public class AddForce : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D bouncyMaterial;
     [SerializeField]private CameraZoom _cameraZoom;
     [SerializeField]private bool _grounded;
-    
+
+    private SoundPlayer _sound;
     private Rigidbody2D _rbd;
     private BoxCollider2D _boxCollider2D;
     private PlayerSounds _playerSounds;
@@ -24,6 +25,7 @@ public class AddForce : MonoBehaviour
 
     private void Start()
     {
+        _sound = GetComponent<SoundPlayer>();
         _rbd = GetComponent<Rigidbody2D>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _playerSounds = GetComponent<PlayerSounds>();
@@ -88,7 +90,7 @@ public class AddForce : MonoBehaviour
         StartCoroutine(StopGrounded());
         _cameraZoom.zoomOut = true;
         _zoom = true;
-        _playerSounds.PlaySound(_playerSounds.jump);
+        _sound.PlayJumpSound();
     }
 
     private Vector2 CalculateDirection(Vector2 pointA, Vector2 pointB)
