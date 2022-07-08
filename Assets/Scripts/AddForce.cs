@@ -97,14 +97,19 @@ public class AddForce : MonoBehaviour
     {
         Vector2 direction = pointA - pointB;
 
-        if (Mathf.Abs(direction.y) > 5)
+        if (Mathf.Abs(direction.y) >= 5)
         {
             direction.y = Mathf.Sign(direction.y) * 5;
         }
-
-        if (Mathf.Abs(direction.x) > 3)
+        if (Mathf.Abs(direction.x) >= 3 )
         {
-            direction.x = Mathf.Sign(direction.x) * 3;
+            if (Mathf.Abs(direction.x) > 5)
+                direction.x = Mathf.Sign(direction.x) * 3;
+            else
+            {
+                float percentage = (direction.x * 100) / 5;
+                direction.x = 3 * (percentage / 100);
+            }
         }
 
         return direction;
