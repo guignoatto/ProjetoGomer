@@ -447,7 +447,8 @@ MonoBehaviour:
   mouseUpTransform: {fileID: 3360143459415837843}
   groundMaterial: {fileID: 6200000, guid: 0a8b30d01750b2443b34ae945030ab05, type: 2}
   iceMaterial: {fileID: 6200000, guid: a433825fec7ce5947bf7ec81fca480c5, type: 2}
-  bouncyMaterial: {fileID: 6200000, guid: d24f1176bf4d0074ba2c1d16b84db7a9, type: 2}
+  bouncyGroundMaterial: {fileID: 6200000, guid: 2da5add6d84a0004a8f1cfdf44150b72, type: 2}
+  bouncyAirMaterial: {fileID: 6200000, guid: d24f1176bf4d0074ba2c1d16b84db7a9, type: 2}
   _cameraZoom: {fileID: 1822765961}
   _grounded: 0
 --- !u!114 &4834235485753233060

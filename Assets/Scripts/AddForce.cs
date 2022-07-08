@@ -13,7 +13,8 @@ public class AddForce : MonoBehaviour
     [SerializeField] private Transform mouseUpTransform;
     [SerializeField] private PhysicsMaterial2D groundMaterial;
     [SerializeField] private PhysicsMaterial2D iceMaterial;
-    [SerializeField] private PhysicsMaterial2D bouncyMaterial;
+    [SerializeField] private PhysicsMaterial2D bouncyGroundMaterial;
+    [SerializeField] private PhysicsMaterial2D bouncyAirMaterial;
     [SerializeField] private CameraZoom _cameraZoom;
     [SerializeField] private bool _grounded;
 
@@ -53,13 +54,12 @@ public class AddForce : MonoBehaviour
         if (!_grounded && !_checkGroundMaterial)
             _checkGroundMaterial = true;
         
-        _boxCollider2D.sharedMaterial = _grounded ? _boxCollider2D.sharedMaterial : bouncyMaterial;
+        _boxCollider2D.sharedMaterial = _grounded ? groundMaterial : bouncyAirMaterial;
         if (_grounded)
         {
             if (_checkGroundMaterial)
             {
                 _checkGroundMaterial = false;
-                //PEGA O TIPO DE CHAO
                 GetGroundMaterial(raycastHit2D.collider.gameObject.tag);
             }
 
@@ -80,9 +80,6 @@ public class AddForce : MonoBehaviour
     {
         switch (tag)
         {
-            case "ice":
-                _boxCollider2D.sharedMaterial = iceMaterial;
-                break;
             case "normal":
                 _boxCollider2D.sharedMaterial = groundMaterial;
                 _rbd.drag = 5;
