@@ -53,6 +53,7 @@ public class AddForce : MonoBehaviour
         if (!_grounded && !_checkGroundMaterial)
             _checkGroundMaterial = true;
         
+        _boxCollider2D.sharedMaterial = _grounded ? _boxCollider2D.sharedMaterial : bouncyMaterial;
         if (_grounded)
         {
             if (_checkGroundMaterial)
