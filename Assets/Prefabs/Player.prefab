@@ -445,6 +445,8 @@ MonoBehaviour:
   charAttributes: {fileID: 11400000, guid: a6ab3a1d2c4e37641bbbd4b29b51aeb3, type: 2}
   firstClickTransform: {fileID: 3360143458366358052}
   mouseUpTransform: {fileID: 3360143459415837843}
+  groundMaterial: {fileID: 6200000, guid: 0a8b30d01750b2443b34ae945030ab05, type: 2}
+  iceMaterial: {fileID: 6200000, guid: a433825fec7ce5947bf7ec81fca480c5, type: 2}
   bouncyMaterial: {fileID: 6200000, guid: d24f1176bf4d0074ba2c1d16b84db7a9, type: 2}
   _cameraZoom: {fileID: 1822765961}
   _grounded: 0

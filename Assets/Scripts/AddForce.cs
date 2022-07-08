@@ -11,9 +11,11 @@ public class AddForce : MonoBehaviour
     [SerializeField] private CharacterAttributes charAttributes;
     [SerializeField] private Transform firstClickTransform;
     [SerializeField] private Transform mouseUpTransform;
+    [SerializeField] private PhysicsMaterial2D groundMaterial;
+    [SerializeField] private PhysicsMaterial2D iceMaterial;
     [SerializeField] private PhysicsMaterial2D bouncyMaterial;
-    [SerializeField]private CameraZoom _cameraZoom;
-    [SerializeField]private bool _grounded;
+    [SerializeField] private CameraZoom _cameraZoom;
+    [SerializeField] private bool _grounded;
 
     private SoundPlayer _sound;
     private Rigidbody2D _rbd;
@@ -22,6 +24,7 @@ public class AddForce : MonoBehaviour
     private bool _dragging;
     private bool _zoom = false;
     private bool _stopGrounded = false;
+    private bool _checkGroundMaterial = true;
 
     private void Start()
     {
@@ -47,12 +50,20 @@ public class AddForce : MonoBehaviour
         // Debug.DrawRay(_boxCollider2D.bounds.center - new Vector3(_boxCollider2D.bounds.extents.x, 0),-Vector2.up * (_boxCollider2D.bounds.extents.y + raycastDistance), color);
         // Debug.DrawRay(_boxCollider2D.bounds.center - new Vector3(_boxCollider2D.bounds.extents.x, _boxCollider2D.bounds.extents.y + raycastDistance),Vector2.right * (_boxCollider2D.bounds.extents.x), color);
         _grounded = raycastHit2D.collider != null;
-
-        _boxCollider2D.sharedMaterial = _grounded ? null : bouncyMaterial;
+        if (!_grounded && !_checkGroundMaterial)
+            _checkGroundMaterial = true;
+        
         if (_grounded)
         {
-            _rbd.drag = 5;
-            if (_zoom && _stopGrounded)
+            if (_checkGroundMaterial)
+            {
+                _checkGroundMaterial = false;
+                //PEGA O TIPO DE CHAO
+                GetGroundMaterial(raycastHit2D.collider.gameObject.tag);
+            }
+
+            
+            if (_zoom && !_stopGrounded)
             {
                 _cameraZoom.zoomIn = true;
                 _zoom = false;
@@ -64,6 +75,19 @@ public class AddForce : MonoBehaviour
         }
     }
 
+    private void GetGroundMaterial(string tag)
+    {
+        switch (tag)
+        {
+            case "ice":
+                _boxCollider2D.sharedMaterial = iceMaterial;
+                break;
+            case "normal":
+                _boxCollider2D.sharedMaterial = groundMaterial;
+                _rbd.drag = 5;
+                break;
+        }
+    }
     private void Inputs()
     {
         if (Input.GetMouseButtonDown(0))
@@ -88,6 +112,7 @@ public class AddForce : MonoBehaviour
         _rbd.drag = 0;
         _rbd.AddForce(direction * charAttributes.PullForce);
         StartCoroutine(StopGrounded());
+        _checkGroundMaterial = true;
         _cameraZoom.zoomOut = true;
         _zoom = true;
         _sound.PlayJumpSound();
@@ -101,7 +126,8 @@ public class AddForce : MonoBehaviour
         {
             direction.y = Mathf.Sign(direction.y) * 5;
         }
-        if (Mathf.Abs(direction.x) >= 3 )
+
+        if (Mathf.Abs(direction.x) >= 3)
         {
             if (Mathf.Abs(direction.x) > 5)
                 direction.x = Mathf.Sign(direction.x) * 3;
@@ -114,11 +140,10 @@ public class AddForce : MonoBehaviour
 
         return direction;
     }
-
     private IEnumerator StopGrounded()
     {
-        _stopGrounded = false;
-        yield return new WaitForSeconds(0.05f);
         _stopGrounded = true;
+        yield return new WaitForSeconds(0.05f);
+        _stopGrounded = false;
     }
 }
